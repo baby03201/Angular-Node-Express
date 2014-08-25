@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Node/Angular App</title>
+
+        <!-- SCROLL -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <style>
+            html        { overflow-y: scroll; }
+            body        { 
+                            padding-top: 50px;
+                            padding-left: 50px;
+                        }
+        </style>
+
+        <!-- SPELL -->
+        <script src="/javascripts/angular.js"></script>
+        <script src="core.js"></script>
+</head>
+<body> 
+    <p> Current Render Action:
+        <strong ng-bind="renderAction">Unknown</strong>
+    </p>
+    <div class= "main-container" ng-app="userApplication">
+    <div class="user-container" ng-controller="userController">
+        <table border=1 cellpadding=10>
+            <tr>
+                <th>Username</th>
+                <th>Email</th>
+                <th>User Group</th>
+                <th>Edit?/Delete?</th>
+            </tr>
+            <tr ng-repeat="user in users">
+                <td><p>{{ user.username }}</p></td>
+                <td><p>{{ user.email }}</p></td>
+                <td>
+                    <select ng-model="user.gid"  ng-options="group.id as group.description for group in groups" ng-change="updateGroup(user)">
+                    </select>
+                </td>
+                <td><a ng-click="deleteUser(user)">delete</a></td>
+            </tr>
+        </table>
+        
+         </div>
+    </div>
+</body>
+</html>
+
