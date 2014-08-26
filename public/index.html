@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Node/Angular App</title>
+
+        <!-- SCROLL -->
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+        <style>
+            html        { overflow-y: scroll; }
+            body        { 
+                            padding-top: 50px;
+                            padding-left: 50px;
+                        }
+            a           {
+                            color: #333333;
+                        }
+            .selected-tab{
+                            color: #CC0000;
+                            font-weight: bold;
+                            text-decoration: none;
+                        }
+        </style>
+
+        <!-- SPELL -->
+        <script src="angular.js"></script>
+        <script src="core.js"></script>
+        <script src="core-switch.js"></script>
+</head>
+<body ng-app="userApplication">
+    <!-- 
+        When the route changes, we're going to be setting up the renderPath,
+        an array of values that help define how the page is going to be rendered.
+        We can use these values to conditionally show/load parts of the page.
+    -->
+    
+    
+    <div ng-controller="appSwitch">
+        <p>
+        <a ng-href="#/home" ng-class="{'selected-tab': selected == tabs[0]}" ng-click="switchContent(0)">Home</a> -
+        <a ng-href="#/user" ng-class="{'selected-tab': selected == tabs[1]}" ng-click="switchContent(1)">User</a> -
+        <a ng-href="#/admin" ng-class="{'selected-tab': selected == tabs[2]}"ng-click="switchContent(2)">Admin</a>
+        </p>
+        <div ng-switch on ="selected">
+            <span ng-switch-when = "Home"> <p>This is Homepage you choose</p> </span>
+            <span ng-switch-when = "User"> <p>This is Userpage you choose</p> </span>
+            <div ng-switch-when = "Admin">
+                <div class="user-container">
+                    <table border=1 cellpadding=10 ng-controller="userController">
+                        <tr>
+                            <th>Username</th>
+                            <th>Email</th>
+                            <th>User Group</th>
+                            <th>Edit?/Delete?</th>
+                        </tr>
+                        <tr ng-repeat="user in users">
+                            <td><p>{{ user.username }}</p></td>
+                            <td><p>{{ user.email }}</p></td>
+                            <td>
+                                <select ng-model="user.gid"  ng-options="group.id as group.description for group in groups" ng-change="updateGroup(user)">
+                                </select>
+                            </td>
+                            <td><a ng-click="deleteUser(user)">delete</a></td>
+                        </tr>
+                        <tr ng-show="boolAddButton == 0">
+                            <td colspan="4"> <Button ng-click="toggleButton()">Add</Button></td>
+                        </tr>
+                        <tr ng-show="boolAddButton == 1">
+                            <td><input ng-model="data.username" required></input></td>
+                            <td><input ng-model="data.email"></input></td>
+                            <td>
+                                <select ng-model="data.permissionGroupID" ng-options="group.id as group.description for group in groups"></select>
+                            </td>
+                            <td><a ng-click="addUser()">register</a></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
+
