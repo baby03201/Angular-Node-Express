@@ -32,7 +32,7 @@ user.controller('userController', function($scope,userService){
     
     $scope.toggleButton = function(){
         $scope.boolAddButton = 1;
-        $scope.data.username = "";
+	$scope.data.username = "";
         $scope.data.email ="";
         $scope.data.permissionGroupID = 0;
     };
@@ -133,8 +133,6 @@ user.service('userService',function( $http, $q ) {
                 user   : user
             }
         });
-    
-    
         return(request.then( handleSuccess, handleError ));
     }
 

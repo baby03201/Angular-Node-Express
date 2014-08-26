@@ -68,7 +68,7 @@
                         </tr>
                         <tr ng-show="boolAddButton == 1">
                             <td><input ng-model="data.username" required></input></td>
-                            <td><input ng-model="data.email"></input></td>
+                            <td><input ng-model="data.email" required></input></td>
                             <td>
                                 <select ng-model="data.permissionGroupID" ng-options="group.id as group.description for group in groups"></select>
                             </td>

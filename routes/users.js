@@ -19,11 +19,12 @@ router.get('/', function(req, res) {
 
 /* POST users */
 router.post('/register', function(req, res){
+
 	var data = req.body.user;
     req.getConnection(function(req, connection){
         
-        
-       connection.query('INSERT INTO user SET ?', data, function(err,rows){
+        console.log("Add user into list");
+        connection.query('INSERT INTO user SET ?', data, function(err,rows){
             var response = {
                 success : 0,
                 error   : {}
