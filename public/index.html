@@ -27,6 +27,7 @@
         <script src="angular.js"></script>
         <script src="core.js"></script>
         <script src="core-switch.js"></script>
+        <script src="custom-directive.js"></script>
 </head>
 <body ng-app="userApplication">
     <!-- 
@@ -55,13 +56,22 @@
                             <th>Edit?/Delete?</th>
                         </tr>
                         <tr ng-repeat="user in users">
-                            <td><p>{{ user.username }}</p></td>
-                            <td><p>{{ user.email }}</p></td>
+                            <td ng-hide="user.id == editDetail.id"><p>{{ user.username }}</p></td>
+                            <td ng-hide="user.id == editDetail.id"><p>{{ user.email }}</p></td>
+                            <td ng-show="user.id == editDetail.id">
+                                <input ng-model="editDetail.username" ng-enter="inputKeyUp()" required></input>
+                            </td>
+                            <td ng-show="user.id == editDetail.id">
+                                <input ng-model="editDetail.email" ng-enter="inputKeyUp()"required></input>
+                            </td>
                             <td>
                                 <select ng-model="user.gid"  ng-options="group.id as group.description for group in groups" ng-change="updateGroup(user)">
                                 </select>
                             </td>
-                            <td><a ng-click="deleteUser(user)">delete</a></td>
+                            <td>
+                                <a ng-click="editButtonClicked(user)" >Edit</a>/
+                                <a ng-click="deleteUser(user)">Delete</a>
+                            </td>
                         </tr>
                         <tr ng-show="boolAddButton == 0">
                             <td colspan="4"> <Button ng-click="toggleButton()">Add</Button></td>

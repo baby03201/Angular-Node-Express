@@ -1,11 +1,16 @@
-var user = angular.module('userApplication', ['core-switch']);
+var user = angular.module('userApplication', ['core-switch','custom-directive']);
 
 user.controller('userController', function($scope,userService){
     // List of the users
     $scope.users = [];
     $scope.groups = [];
     $scope.boolAddButton = 0;
-
+    // Edit user form
+    $scope.editDetail = {
+        id      : "",
+        username: "",
+        email   : ""
+    };
     // Add user form
     $scope.data = {
         username    : "",
@@ -43,6 +48,30 @@ user.controller('userController', function($scope,userService){
             .then( loadUsers );
     };
 
+    $scope.editButtonClicked = function( user ) {
+        $scope.editDetail.username = user.username;
+        $scope.editDetail.email = user.email;
+        $scope.editDetail.id = user.id;
+    };
+
+    $scope.inputKeyUp = function (){
+        var send = 1;
+        for ( var i = 0 ; i < $scope.users.length ; i++ ) {
+            if ( $scope.users[i].id == $scope.editDetail.id ){
+                if ( $scope.users[i].username != $scope.editDetail.username || 
+                     $scope.users[i].email != $scope.editDetail.email ) {
+                    $scope.users[i].username = $scope.editDetail.username;
+                    $scope.users[i].email = $scope.editDetail.email;
+                } else {  
+                    send = 0;
+                }
+                if( send == 1 )
+                    userService.updateUser( $scope.users[i] );
+                break;
+            }
+        }
+    };
+
     /*
      * Private Methods
      */
@@ -75,7 +104,8 @@ user.service('userService',function( $http, $q ) {
         removeUser: removeUser,
         listGroup: listGroup,
         updateGroup: updateGroup,
-        addUser: addUser
+        addUser: addUser,
+        updateUser: updateUser
     };
     
     function getUsers(){
@@ -136,6 +166,21 @@ user.service('userService',function( $http, $q ) {
         return(request.then( handleSuccess, handleError ));
     }
 
+    function updateUser( user ){
+        var request = $http({
+            method  : "put",
+            url     : "api/users",
+            params  : {
+                action  : "put"
+            },
+            data    : {
+                id    : user.id,
+                username: user.username,
+                email   : user.email
+            }
+        });
+    }
+
     //private methods
     function handleError( response ){
         if(
@@ -151,3 +196,4 @@ user.service('userService',function( $http, $q ) {
         return (response.data);
     }
 });
+
